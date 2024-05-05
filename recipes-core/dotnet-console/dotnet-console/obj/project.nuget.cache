@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "dgSpecHash": "SfHuLvLwdFEzOTIGBYVc7wP/R1poz2YvEK/oN1G6cZS0wytI0C2kOErOmOl8g3449PvfvPE0XyuQpBM43YN87w==",
-  "success": true,
-  "projectFilePath": "/home/trice/tinyos-yocto/meta-tinyos-distro/recipes-core/dotnet-console/dotnet-console/Console.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
-}

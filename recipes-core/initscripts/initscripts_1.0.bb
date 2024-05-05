@@ -16,7 +16,6 @@ SRC_URI = " \
 	file://halt \
     file://hostname \
 	file://mountall \
-	file://usbgadget \
 	file://sysfs \
 	file://populate-volatile \
     file://volatiles \
@@ -43,7 +42,6 @@ RPROVIDES:${PN}-functions = "initd-functions"
 RCONFLICTS:${PN}-functions = "lsbinitscripts"
 FILES:${PN}-functions = "${sysconfdir}/init.d/functions*"
 
-
 HALTARGS ?= "-d -f"
 
 do_configure() {
@@ -69,7 +67,6 @@ do_install () {
 	install -m 0755 ${WORKDIR}/bootmisc ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/hostname ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/mountall ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/usbgadget ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/sysfs ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/checkroot ${D}${sysconfdir}/init.d
 
@@ -97,7 +94,6 @@ do_install () {
 	update-rc.d -r ${D} bootmisc start 36 S .
 	update-rc.d -r ${D} hostname start 39 S .
 	update-rc.d -r ${D} mountall start 03 S .
-	update-rc.d -r ${D} usbgadget start 98 S .
 	update-rc.d -r ${D} sysfs start 02 S .
 	update-rc.d -r ${D} dmesg start 38 S .
 	update-rc.d -r ${D} populate-volatile start 37 S .
