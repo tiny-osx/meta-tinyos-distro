@@ -15,12 +15,15 @@ iface wlan0 inet dhcp
 iface bnep0 inet dhcp
 
 # Wired interfaces
+auto eth0
 iface eth0 inet dhcp
 	hostname $(hostname)
+auto eth1
 iface eth1 inet dhcp
 	hostname $(hostname)
 	
 # Ethernet/RNDIS gadget
+allow-hotplug usb0
 iface usb0 inet static
 	address 192.168.7.1
 	netmask 255.255.255.0

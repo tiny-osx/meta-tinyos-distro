@@ -5,7 +5,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 inherit dotnet
 
-SRCREV = "c91b1394213fe57f152534a7e68499926418e95e"
+# SRCREV = "c91b1394213fe57f152534a7e68499926418e95e"
+SRCREV = "315a91d98c102054646c4b1b76f0f5dfa0b680e7"
+
 SRC_URI += " \
         git://github.com/tiny-osx/tinyos-daemon;branch=main;protocol=https \
         file://tinyosd.sh \
@@ -21,7 +23,7 @@ FILES:${PN} += "\
 
 do_compile()  {
     dotnet publish \
-        ${S} \
+        ${S}/TinyOS.Daemon.sln \
         --configuration Release \
         --runtime ${BUILD_TARGET} \
         --output ${O}
