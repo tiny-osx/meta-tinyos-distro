@@ -16,10 +16,12 @@ IMAGE_LINGUAS = "${LINGUAS_EN_GB} ${LINGUAS_EN_US}"
 # Additional application configuration
 CORE_IMAGE_EXTRA_INSTALL += " \
     sudo \
+    iptables \
     tinyosd \
     usbinit \
     watchdog \
     apps-files \
+    wireless-regdb-static \
 "
 
 # Perform some changes to the rootfs

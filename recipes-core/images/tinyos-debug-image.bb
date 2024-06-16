@@ -4,6 +4,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda
 
 include tinyos-image.inc
 
+# Set hostname
+hostname:pn-base-files = "tinyos-debug"
+
 # Additional image configuration defaults
 EXTRA_IMAGE_FEATURES ?= " \ 
     ssh-server-openssh \
