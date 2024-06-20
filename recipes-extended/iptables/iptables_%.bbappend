@@ -2,21 +2,13 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "\
     file://firewall \
-    file://init \
-    file://rules \
+    file://iptables.rules \
+    file://ip6tables.rules \
 "
-
-inherit update-rc.d
-
-INITSCRIPT_NAME = "iptables"
-INITSCRIPT_PARAMS = "start 50 S ."
 
 do_install:append() {
     install -d ${D}${sysconfdir}/iptables
-    install -m 0644 ${WORKDIR}/rules ${D}${sysconfdir}/iptables
-
-    install -d ${D}${INIT_D_DIR}
-    install -m 0755 ${WORKDIR}/init ${D}${INIT_D_DIR}/iptables
-
+    install -m 0644 ${WORKDIR}/iptables.rules ${D}${sysconfdir}/iptables
+    install -m 0644 ${WORKDIR}/ip6tables.rules ${D}${sysconfdir}/iptables
     install -m 0755 ${WORKDIR}/firewall ${D}${sbindir}
 }

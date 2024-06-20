@@ -6,10 +6,12 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 inherit dotnet
 
 # SRCREV = "c91b1394213fe57f152534a7e68499926418e95e"
-SRCREV = "315a91d98c102054646c4b1b76f0f5dfa0b680e7"
+# SRCREV = "315a91d98c102054646c4b1b76f0f5dfa0b680e7"
+SRCREV = "35b30ad8df3c203ef7a8051606c956e47034b698"
 
 SRC_URI += " \
         git://github.com/tiny-osx/tinyos-daemon;branch=main;protocol=https \
+        file://init.sh \
         file://tinyosd.sh \
 "
  
@@ -39,12 +41,17 @@ do_compile()  {
 #         --output ${O}
 # }
 
+inherit useradd
+USERADD_PACKAGES = "${PN}"
+GROUPADD_PARAM:${PN} = "--system dotnet"
+
 do_install() {
     install -d ${D}${sysconfdir}/init.d/
-    install -c -m 755 ${WORKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME}
+    install -c -m 0755 ${WORKDIR}/${INITSCRIPT_NAME} ${D}${sysconfdir}/init.d/${INITSCRIPT_NAME}
     
     install -d ${D}${datadir}/tinyosd
-    install -c -m 755 ${O}/tinyosd ${D}${datadir}/tinyosd
+    install -c -m 0755 -g dotnet ${WORKDIR}/init.sh ${D}${datadir}/tinyosd
+    install -c -m 0755 -g dotnet ${O}/tinyosd ${D}${datadir}/tinyosd
 
     install -d ${D}${bindir}
     ln -rs ${D}${datadir}/tinyosd/tinyosd ${D}${bindir}/tinyosd

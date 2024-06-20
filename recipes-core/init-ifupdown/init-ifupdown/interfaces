@@ -4,23 +4,20 @@
 auto lo
 iface lo inet loopback
 
-# Wireless interfaces
-iface wlan0 inet dhcp
-	wireless_mode managed
-	wireless_essid any
-	wpa-driver wext
-	wpa-conf /etc/wpa_supplicant.conf
+# Ethernet/RNDIS gadget
+auto usb0
+iface usb0 inet static
+ hostname $(hostname)
+ address 192.168.252.1
+ netmask 255.255.255.252
+ post-up start-stop-daemon -S -b -m -p /var/run/udhcpd.usb0.pid -a /usr/sbin/udhcpd -- /etc/udhcpd.conf
+ post-down start-stop-daemon -K -q -p /var/run/udhcpd.usb0.pid
 
 # Wired interfaces
 iface eth0 inet dhcp
-	hostname $(hostname)
+ hostname $(hostname)
 iface eth1 inet dhcp
-	hostname $(hostname)
-	
-# Ethernet/RNDIS gadget
-allow-hotplug usb0
-iface usb0 inet static
-	address 192.168.7.1
-	netmask 255.255.255.0
-	post-up start-stop-daemon -S -b -m -p /var/run/udhcpd.usb0.pid -a /usr/sbin/udhcpd -- /etc/udhcpd.conf
-	post-down start-stop-daemon -K -q -p /var/run/udhcpd.usb0.pid
+ hostname $(hostname)
+
+# Wireless interfaces
+iface wlan0 inet dhcp

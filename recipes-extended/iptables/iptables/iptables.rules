@@ -1,0 +1,9 @@
+*filter
+:new-conn -
+-A INPUT -p tcp --dport 8920 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp --sport 8920 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+-A INPUT -p udp --dport 8920 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp --sport 8920 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate NEW -j new-conn
+COMMIT
