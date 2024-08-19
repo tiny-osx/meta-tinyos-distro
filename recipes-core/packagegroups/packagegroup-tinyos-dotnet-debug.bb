@@ -24,8 +24,10 @@ RDEPENDS:${PN} = " \
 RDEPENDS:packagegroup-tinyos-shell = "\
 	git \
 	curl \
-	lrzsz \
 "
+
+RDEPENDS:packagegroup-tinyos-fonts = "\
+	fontconfig-utils"
 
 RDEPENDS:packagegroup-tinyos-vscode = "\
 	ldd \

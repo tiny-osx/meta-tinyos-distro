@@ -14,14 +14,41 @@ LINGUAS_EN_US = "en-us en-us.iso-8859-1"
 IMAGE_LINGUAS = "${LINGUAS_EN_GB} ${LINGUAS_EN_US}"
 
 # Additional application configuration
+# CORE_IMAGE_EXTRA_INSTALL += " \
+#     iwd \
+#     sudo \
+#     tinyosd \
+#     watchdog \
+#     iptables \
+#     fontconfig \
+#     fontconfig-utils \
+#     liberation-fonts \
+#     libinput \ 
+#     wireless-regdb-static \
+# "
+
 CORE_IMAGE_EXTRA_INSTALL += " \
-    iwd \
     sudo \
-    tinyosd \
     watchdog \
-    iptables \
-    wireless-regdb-static \
 "
+
+
+
+# CORE_IMAGE_EXTRA_INSTALL += " \
+#     iwd \
+#     sudo \
+#     tinyosd \
+#     watchdog \
+#     iptables \
+#     fontconfig \
+#     fontconfig-utils \
+#     liberation-fonts \
+#     libegl \
+#     libdrm \
+#     libgbm \
+#     libinput \ 
+#     wireless-regdb-static \
+# "
 
 # Perform some changes to the rootfs
 rootfs_postprocess() {

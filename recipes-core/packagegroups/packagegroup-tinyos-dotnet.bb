@@ -9,11 +9,13 @@ inherit packagegroup
 PROVIDES = "${PACKAGES}"
 PACKAGES = " \
 	packagegroup-tinyos-gpio \
+	packagegroup-tinyos-fonts \
 	packagegroup-tinyos-dotnet \
 	packagegroup-tinyos-dotnet-runtime \
 "
 RDEPENDS:${PN} = " \
 	packagegroup-tinyos-gpio \
+	packagegroup-tinyos-fonts \
 	packagegroup-tinyos-dotnet \
 	packagegroup-tinyos-dotnet-runtime \
 "
@@ -21,6 +23,11 @@ RDEPENDS:packagegroup-tinyos-gpio = "\
 	libgpiod \
 	libgpiod-dev \
 	libgpiod-tools"
+
+RDEPENDS:packagegroup-tinyos-fonts = "\
+    fontconfig \
+	fontconfig-utils \
+    liberation-fonts"
 
 RDEPENDS:packagegroup-tinyos-dotnet-runtime = "\
 	vsdbg"
