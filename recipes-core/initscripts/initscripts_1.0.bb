@@ -13,6 +13,7 @@ SRC_URI = " \
 	file://dmesg \
 	file://dmesg.conf \
 	file://functions \
+	file://gadgets \
 	file://halt \
     file://hostname \
 	file://mountall \
@@ -64,11 +65,12 @@ do_install () {
 
 	install -m 0644 ${WORKDIR}/functions	${D}${sysconfdir}/init.d
 	
-	install -m 0755 ${WORKDIR}/bootmisc ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/hostname ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/mountall ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/sysfs ${D}${sysconfdir}/init.d
-	install -m 0755 ${WORKDIR}/checkroot ${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/gadgets 		${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/bootmisc 	${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/hostname 	${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/mountall 	${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/sysfs 		${D}${sysconfdir}/init.d
+	install -m 0755 ${WORKDIR}/checkroot 	${D}${sysconfdir}/init.d
 
 	install -m 0755 ${WORKDIR}/populate-volatile ${D}${sysconfdir}/init.d
 	install -m 0644 ${WORKDIR}/volatiles ${D}${sysconfdir}/default/volatiles/00_core
@@ -91,6 +93,7 @@ do_install () {
 			${D}${sysconfdir}/default/volatiles/00_core
 	fi
 
+	update-rc.d -r ${D} gadgets start 36 S .
 	update-rc.d -r ${D} bootmisc start 36 S .
 	update-rc.d -r ${D} hostname start 39 S .
 	update-rc.d -r ${D} mountall start 03 S .

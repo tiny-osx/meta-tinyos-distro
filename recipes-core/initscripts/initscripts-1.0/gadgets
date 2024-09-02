@@ -1,0 +1,141 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          USB Ethernet Gadget
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Enable USB Ethernet Gadget on Raspberry Pi
+### END INIT INFO
+
+do_start() {
+
+	if [ ! -d /sys/kernel/config/usb_gadget ]; then
+		exit 0
+	fi
+
+	echo "Starting gadget"
+
+	mkdir /sys/kernel/config/usb_gadget/g1
+	cd /sys/kernel/config/usb_gadget/g1
+
+	# Retrieve Pi serial number
+	SERIAL="$(grep Serial /proc/cpuinfo | sed 's/Serial\s*: 0000\(\w*\)/\1/')"
+	# add colons for MAC address format
+	MAC="$(echo ${SERIAL} | sed 's/\(\w\w\)/:\1/g' | cut -b 2-)"
+	# Change the first number for each MAC address - the second digit of 2 indicates
+	# that these are "locally assigned (b2=1), unicast (b1=0)" addresses. This is
+	# so that they don't conflict with any existing vendors. Care should be taken
+	# not to change these two bits.
+	DEV_MAC="02$(echo ${MAC} | cut -b 3-)"
+	HOST_MAC="12$(echo ${MAC} | cut -b 3-)"
+
+	echo "0x1d6b" > idVendor	# Linux Foundation
+	echo "0x0104" > idProduct 	# Multifunction Composite Gadget
+	echo "0x0200" > bcdUSB 		# USB 2.0
+
+	# This should be incremented any time there are breaking changes to this script so that the host OS
+	# sees it as a new device and re-enumerates everything rather than relying on cached values.
+	echo "0x0100" > bcdDevice 	# v1.0.0 -increment when changes are made
+
+	# Composite Class
+	echo "0xEF" > bDeviceClass 		# Networking Device Class
+	echo "0x02" > bDeviceSubClass 	# Common Sub Class
+	echo "0x01" > bDeviceProtocol	# Interface Association Descriptor
+
+	LANGUAGE="0x409" # English Language Strings
+
+	mkdir -p strings/$LANGUAGE
+	echo "${SERIAL}" > strings/$LANGUAGE/serialnumber
+	echo "Bytewizer Technology" > strings/$LANGUAGE/manufacturer
+	echo "TinyOS" > strings/$LANGUAGE/product
+	echo "Starting gadget"
+	# Allow the gadget to be used as a serial device
+	mkdir -p functions/acm.gs0
+	
+	# Config 1 - RNDIS
+	mkdir configs/c.1
+	mkdir -p configs/c.1/strings/$LANGUAGE
+	echo "Config 1: Multigadget RNDIS/ACM" > configs/c.1/strings/$LANGUAGE/configuration
+	echo 250 > configs/c.1/MaxPower
+	echo 0xC0 > configs/c.1/bmAttributes
+
+	# Windows support
+	mkdir -p functions/rndis.usb0
+	echo "${DEV_MAC}" > functions/rndis.usb0/dev_addr
+	echo "${HOST_MAC}" > functions/rndis.usb0/host_addr
+
+	mkdir -p functions/rndis.usb0/os_desc/interface.rndis
+	echo "RNDIS" > functions/rndis.usb0/os_desc/interface.rndis/compatible_id
+	echo "5162001" > functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
+
+	# Windows extension to force RNDIS config
+	echo "1" > os_desc/use
+	echo "0xbc" > os_desc/b_vendor_code
+	echo "MSFT100" > os_desc/qw_sign
+
+	# Link function to USB device
+	ln -s functions/rndis.usb0 configs/c.1
+	ln -s functions/acm.gs0 configs/c.1
+	ln -s configs/c.1 os_desc
+
+	# Attaching gadget to the USB device
+	udevadm settle -t 5 || :
+	ls /sys/class/udc > UDC
+
+	# ifconfig usb0 10.0.0.1 netmask 255.255.255.252 up
+	# route add -net default gw 10.0.0.2
+}
+
+do_stop() {
+
+	echo "Stop usb gadget"
+	cd /sys/kernel/config/usb_gadget/g1
+	echo "" > UDC
+	rm os_desc/c.1/
+	rm configs/c.1/rndis.usb0/
+	rm configs/c.1/acm.gs0/
+	rmdir configs/c.1/strings/$LANGUAGE/
+	rmdir configs/c.1/
+	rmdir functions/rndis.usb0/
+	rmdir functions/acm.gs0/
+	rmdir strings/$LANGUAGE/
+	cd ..
+	rmdir g1/
+
+	rmmod libcomposite
+	rmmod dwc2
+}
+
+case $1 in
+    start)
+        do_start 
+        ;;
+    stop)
+        do_stop
+        ;;
+    *)
+        echo "Usage: $0 (stop | start)"
+        ;;
+esac
+
+# DEV_MAC2="22$(echo ${MAC} | cut -b 3-)"
+# HOST_MAC2="32$(echo ${MAC} | cut -b 3-)"
+
+# Config 2 - CDC ECM
+# mkdir configs/c.2
+# mkdir -p configs/c.2/strings/$LANGUAGE
+# echo "Config 2: Multigadget CDC/ECM/ACM" > configs/c.2/strings/$LANGUAGE/configuration
+# echo 250 > configs/c.2/MaxPower
+# echo 0xC0 > configs/c.2/bmAttributes
+
+# Linux/MacOS support
+# mkdir -p functions/ecm.usb0
+# echo "${DEV_MAC2}" > functions/ecm.usb0/dev_addr
+# echo "${HOST_MAC2}" > functions/ecm.usb0/host_addr
+
+# Link function to USB device
+# ln -s functions/ecm.usb0 configs/c.2
+# ln -s functions/acm.gs0 configs/c.2
