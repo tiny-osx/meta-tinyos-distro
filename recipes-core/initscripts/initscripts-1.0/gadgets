@@ -38,7 +38,7 @@ do_start() {
 
 	# This should be incremented any time there are breaking changes to this script so that the host OS
 	# sees it as a new device and re-enumerates everything rather than relying on cached values.
-	echo "0x0100" > bcdDevice 	# v1.0.0 -increment when changes are made
+	echo "0x0100" > bcdDevice 	# v1.0.0 - increment when changes are made
 
 	# Composite Class
 	echo "0xEF" > bDeviceClass 		# Networking Device Class
@@ -51,7 +51,7 @@ do_start() {
 	echo "${SERIAL}" > strings/$LANGUAGE/serialnumber
 	echo "Bytewizer Technology" > strings/$LANGUAGE/manufacturer
 	echo "TinyOS" > strings/$LANGUAGE/product
-	echo "Starting gadget"
+
 	# Allow the gadget to be used as a serial device
 	mkdir -p functions/acm.gs0
 	
