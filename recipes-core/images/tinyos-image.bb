@@ -14,5 +14,6 @@ IMAGE_ROOTFS_EXTRA_SPACE = "1048576"
 
 # Additional application configuration
 CORE_IMAGE_EXTRA_INSTALL += " \
-    packagegroup-tinyos-dotnet \
+    tinyosd \
+    packagegroup-tinyos \
 "

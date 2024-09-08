@@ -13,27 +13,23 @@ LINGUAS_EN_GB = "en-gb en-gb.iso-8859-1"
 LINGUAS_EN_US = "en-us en-us.iso-8859-1"
 IMAGE_LINGUAS = "${LINGUAS_EN_GB} ${LINGUAS_EN_US}"
 
+# Perform some changes to the rootfs
+rootfs_postprocess() {
+
+    # image timastamp
+    date -u "+%4Y%2m%2d%2H%2M%2S" > ${IMAGE_ROOTFS}/etc/timestamp
+
+    # board type
+    echo 'export BOARD='${MACHINE} >> ${IMAGE_ROOTFS}/etc/profile.d/board.sh 
+
+    # clean up unused directories
+    rm -fr ${IMAGE_ROOTFS}/usr/games
+}
+
+ROOTFS_POSTPROCESS_COMMAND += "rootfs_postprocess;"
+
+
 # Additional application configuration
-# CORE_IMAGE_EXTRA_INSTALL += " \
-#     iwd \
-#     sudo \
-#     tinyosd \
-#     watchdog \
-#     iptables \
-#     fontconfig \
-#     fontconfig-utils \
-#     liberation-fonts \
-#     libinput \ 
-#     wireless-regdb-static \
-# "
-
-CORE_IMAGE_EXTRA_INSTALL += " \
-    sudo \
-    watchdog \
-"
-
-
-
 # CORE_IMAGE_EXTRA_INSTALL += " \
 #     iwd \
 #     sudo \
@@ -49,18 +45,3 @@ CORE_IMAGE_EXTRA_INSTALL += " \
 #     libinput \ 
 #     wireless-regdb-static \
 # "
-
-# Perform some changes to the rootfs
-rootfs_postprocess() {
-
-    # image timastamp
-    date -u "+%4Y%2m%2d%2H%2M%2S" > ${IMAGE_ROOTFS}/etc/timestamp
-
-    # board type
-    echo 'export BOARD='${MACHINE} >> ${IMAGE_ROOTFS}/etc/profile.d/board.sh 
-
-    # clean up unused directories
-    rm -fr ${IMAGE_ROOTFS}/usr/games
-}
-
-ROOTFS_POSTPROCESS_COMMAND += "rootfs_postprocess;"
