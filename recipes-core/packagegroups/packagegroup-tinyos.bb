@@ -14,6 +14,7 @@ PACKAGES = " \
 	packagegroup-tinyos-input \
 	packagegroup-tinyos-fonts \
 	packagegroup-tinyos-vsdgb \
+	packagegroup-tinyos-opengl \
 	packagegroup-tinyos-wireless \
 "
 RDEPENDS:${PN} = " \
@@ -23,6 +24,7 @@ RDEPENDS:${PN} = " \
 	packagegroup-tinyos-input \
 	packagegroup-tinyos-fonts \
 	packagegroup-tinyos-vsdgb \
+	packagegroup-tinyos-opengl \
 	packagegroup-tinyos-wireless \
 "
 
@@ -49,7 +51,12 @@ RDEPENDS:packagegroup-tinyos-vsdgb = "\
 	vsdbg \
 "
 
+RDEPENDS:packagegroup-tinyos-opengl = "\
+	libegl \
+	libdrm \
+	libgbm \
+"
+
 RDEPENDS:packagegroup-tinyos-wireless = "\
-	wpa-supplicant \
 	wireless-regdb-static \
 "
