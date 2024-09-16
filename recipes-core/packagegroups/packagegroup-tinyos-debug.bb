@@ -43,6 +43,7 @@ RDEPENDS:packagegroup-tinyos-debug-fonts = "\
 RDEPENDS:packagegroup-tinyos-debug-vscode = "\
 	ldd \
 	procps \
+	vscode-cli \
 "
 
 RDEPENDS:packagegroup-tinyos-debug-dotnet = "\

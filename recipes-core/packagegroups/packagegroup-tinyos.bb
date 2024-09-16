@@ -31,6 +31,7 @@ RDEPENDS:${PN} = " \
 RDEPENDS:packagegroup-tinyos-base = "\
     sudo \
     watchdog \
+	os-release \
 "
 
 RDEPENDS:packagegroup-tinyos-gpio = "\

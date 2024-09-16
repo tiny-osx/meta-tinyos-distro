@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# Start up NTP daemon when network comes up
+
+if test "x$IFACE" = xlo ; then
+	exit 0
+fi
+
+if test "x$IFACE" = xusb0 ; then
+	exit 0
+fi
+
+# Skip if already running
+if [ -e /var/run/ntpd.pid ]; then
+    exit 0
+fi
+
+# Run daemon
+ntpd -nqN -p 0.pool.ntp.org -p 1.pool.ntp.org -p 2.pool.ntp.org -p 3.pool.ntp.org
+
+exit 0

@@ -1,0 +1,5 @@
+#! /bin/sh
+
+LOG=/var/log/fstrim
+echo "Performing fstrim: $(date -R)" >> $LOG
+time /sbin/fstrim -v /data >> $LOG 2<&1

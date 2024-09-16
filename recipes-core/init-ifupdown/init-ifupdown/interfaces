@@ -14,10 +14,13 @@ iface usb0 inet static
  post-down start-stop-daemon -K -q -p /var/run/udhcpd.usb0.pid
 
 # Wired interfaces
+auto eth0
 iface eth0 inet dhcp
  hostname $(hostname)
+ udhcpc_opts -t 6
 iface eth1 inet dhcp
  hostname $(hostname)
+ udhcpc_opts -t 6
 
 # Wireless interfaces
 iface wlan0 inet dhcp
