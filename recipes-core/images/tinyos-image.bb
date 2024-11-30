@@ -6,6 +6,8 @@ include tinyos-image.inc
 
 # Adds Admin user to sudo group
 EXTRA_USERS_PARAMS += " \
+    usermod -L -e 1 root; \
+    usermod --shell /sbin/nologin root; \
     usermod -a -G root ${ADMIN_USER_NAME}; \
 "
 
@@ -17,3 +19,7 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     tinyosd \
     packagegroup-tinyos \
 "
+
+# IMAGE_INSTALL = "\
+#     networkmanager \
+# "

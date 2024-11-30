@@ -9,6 +9,7 @@ inherit packagegroup
 PROVIDES = "${PACKAGES}"
 PACKAGES = " \
 	packagegroup-tinyos-debug \
+	packagegroup-tinyos-debug-base \
 	packagegroup-tinyos-debug-shell \
 	packagegroup-tinyos-debug-gpio \
 	packagegroup-tinyos-debug-fonts \ 
@@ -19,11 +20,18 @@ PACKAGES = " \
 RDEPENDS:${PN} = " \
 	packagegroup-tinyos \
 	packagegroup-tinyos-debug \
+	packagegroup-tinyos-debug-base \
 	packagegroup-tinyos-debug-shell \
 	packagegroup-tinyos-debug-gpio \
 	packagegroup-tinyos-debug-fonts \ 
 	packagegroup-tinyos-debug-vscode \
 	packagegroup-tinyos-debug-dotnet \
+"
+
+RDEPENDS:packagegroup-tinyos-debug-base = "\
+	fio \
+	fbset \
+	resize-rootfs \
 "
 
 RDEPENDS:packagegroup-tinyos-debug-shell = "\
@@ -32,8 +40,8 @@ RDEPENDS:packagegroup-tinyos-debug-shell = "\
 "
 
 RDEPENDS:packagegroup-tinyos-debug-gpio = "\
-	libgpiod-tools \
 	i2c-tools \
+	libgpiod-tools \
 "
 
 RDEPENDS:packagegroup-tinyos-debug-fonts = "\
@@ -48,8 +56,8 @@ RDEPENDS:packagegroup-tinyos-debug-vscode = "\
 
 RDEPENDS:packagegroup-tinyos-debug-dotnet = "\
 	vsdbg \
-	dotnet-scripts \
 	dotnet-sdk \
 	dotnet-sdk-dev \
 	dotnet-sdk-dbg \
+	dotnet-scripts \
 "

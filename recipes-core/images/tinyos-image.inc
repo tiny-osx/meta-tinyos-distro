@@ -17,11 +17,8 @@ IMAGE_LINGUAS = "${LINGUAS_EN_GB} ${LINGUAS_EN_US}"
 rootfs_postprocess() {
 
     # image timastamp
-    date -u "+%4Y%2m%2d%2H%2M%2S" > ${IMAGE_ROOTFS}/etc/timestamp
-    # `date -u +%4Y%2m%2d%2H%2M%2S`
-    # date -u "+%m%d%H%M%Y" > ${IMAGE_ROOTFS}/etc/timestamp
-    # echo "${DATETIME_COPY}" > ${IMAGE_ROOTFS}/etc/timestamp
-    
+    # date -u +%4Y%2m%2d%2H%2M > ${IMAGE_ROOTFS}/etc/timestamp
+
     # board type
     echo 'export BOARD='${MACHINE} >> ${IMAGE_ROOTFS}/etc/profile.d/board.sh 
 
@@ -31,7 +28,7 @@ rootfs_postprocess() {
 
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_postprocess;"
 
-
+NETWORK_MANAGER ?= "networkmanager"
 
 # Additional application configuration
 # CORE_IMAGE_EXTRA_INSTALL += " \
